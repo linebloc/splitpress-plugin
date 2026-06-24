@@ -1,0 +1,262 @@
+# Translation of SplitPress in Portuguese (Brazil)
+# This file is distributed under the GPL-2.0-or-later.
+# Copyright (C) 2026 SplitPress
+msgid ""
+msgstr ""
+"Project-Id-Version: SplitPress 0.9.0\n"
+"Report-Msgid-Bugs-To: https://splitpress.app\n"
+"PO-Revision-Date: 2026-06-22 10:32+0000\n"
+"Last-Translator: SplitPress <hello@splitpress.app>\n"
+"Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Domain: splitpress\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: splitpress.php
+#: src/Admin/AdminMenu.php:20
+#: src/Admin/AdminMenu.php:21
+#: src/Admin/views/test-list.php:9
+msgid "SplitPress"
+msgstr "SplitPress"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: splitpress.php
+msgid "https://splitpress.app"
+msgstr "https://splitpress.app"
+
+#. Description of the plugin
+#: splitpress.php
+msgid "Backend A/B testing for WordPress. Server-side variant assignment — no redirect, no flash of wrong content."
+msgstr "Testes A/B para WordPress com atribuição de variantes no servidor — sem redirecionamentos, sem conteúdo incorreto piscando."
+
+#: src/Admin/AdminMenu.php:31
+#: src/Admin/AdminMenu.php:32
+msgid "A/B Tests"
+msgstr "Testes A/B"
+
+#: src/Admin/AdminMenu.php:41
+#: src/Admin/AdminMenu.php:42
+#: src/Admin/views/variants.php:27
+msgid "Variant Posts"
+msgstr "Posts de variantes"
+
+#: src/Admin/AdminMenu.php:51
+#: src/Admin/AdminMenu.php:52
+#: src/Admin/views/settings.php:18
+msgid "Settings"
+msgstr "Configurações"
+
+#: src/Admin/SettingsPage.php:89
+#: src/Admin/SettingsPage.php:111
+#: src/Admin/TestListPage.php:34
+#: src/Admin/VariantsPage.php:19
+msgid "Insufficient permissions."
+msgstr "Permissões insuficientes."
+
+#: src/Admin/TestDetailPage.php:39
+msgid "Unable to reach SplitPress API. Check your connection in Settings."
+msgstr "Não foi possível conectar à API do SplitPress. Verifique sua conexão nas Configurações."
+
+#: src/Admin/TestListPage.php:53
+msgid "Unable to reach SplitPress API. Check your API key in Settings."
+msgstr "Não foi possível conectar à API do SplitPress. Verifique sua chave de API nas Configurações."
+
+#: src/Admin/views/settings.php:15
+#: src/Admin/views/settings.php:243
+msgid "Connected"
+msgstr "Conectado"
+
+#: src/Admin/views/settings.php:15
+msgid "Not connected"
+msgstr "Não conectado"
+
+#: src/Admin/views/settings.php:24
+msgid "Settings saved."
+msgstr "Configurações salvas."
+
+#: src/Admin/views/settings.php:30
+msgid "Connect SplitPress"
+msgstr "Conectar o SplitPress"
+
+#: src/Admin/views/settings.php:31
+msgid "Enter your API key to connect this site to your SplitPress account."
+msgstr "Insira sua chave de API para conectar este site à sua conta do SplitPress."
+
+#: src/Admin/views/settings.php:38
+msgid "Page caching can interfere with A/B testing by serving the same cached version to all visitors. Exclude your test pages from cache, or enable \"Cache-busting\" in your cache plugin settings."
+msgstr "O cache de páginas pode interferir nos testes A/B ao servir a mesma versão em cache para todos os visitantes. Exclua as páginas de teste do cache ou ative o \"Limpador de cache\" nas configurações do seu plugin de cache."
+
+#: src/Admin/views/settings.php:48
+msgid "Connection"
+msgstr "Conexão"
+
+#: src/Admin/views/settings.php:54
+msgid "Not tested yet"
+msgstr "Ainda não testado"
+
+#: src/Admin/views/settings.php:57
+msgid "Test connection"
+msgstr "Testar conexão"
+
+#: src/Admin/views/settings.php:64
+msgid "API Key"
+msgstr "Chave de API"
+
+#: src/Admin/views/settings.php:76
+msgid "Find your site API key in SplitPress → Settings → Sites."
+msgstr "Encontre a chave de API do seu site em SplitPress → Configurações → Sites."
+
+#: src/Admin/views/settings.php:83
+msgid "API Endpoint"
+msgstr "Endpoint da API"
+
+#: src/Admin/views/settings.php:93
+msgid "Only change this if you are self-hosting SplitPress."
+msgstr "Altere apenas se você estiver hospedando o SplitPress por conta própria."
+
+#: src/Admin/views/settings.php:103
+msgid "Post Types"
+msgstr "Tipos de post"
+
+#: src/Admin/views/settings.php:105
+msgid "Select which post types can be used in A/B tests."
+msgstr "Selecione quais tipos de post podem ser usados nos testes A/B."
+
+#: src/Admin/views/settings.php:125
+msgid "Permissions"
+msgstr "Permissões"
+
+#: src/Admin/views/settings.php:127
+msgid "Control which roles can access SplitPress features."
+msgstr "Controle quais funções podem acessar os recursos do SplitPress."
+
+#: src/Admin/views/settings.php:134
+msgid "View"
+msgstr "Visualizar"
+
+#: src/Admin/views/settings.php:135
+msgid "Create"
+msgstr "Criar"
+
+#: src/Admin/views/settings.php:136
+msgid "Edit"
+msgstr "Editar"
+
+#: src/Admin/views/settings.php:182
+msgid "Developer"
+msgstr "Desenvolvedor"
+
+#: src/Admin/views/settings.php:187
+msgid "Enable Dev Mode"
+msgstr "Ativar modo de desenvolvimento"
+
+#: src/Admin/views/settings.php:190
+msgid "Shows variant posts in the admin and enables debug logging. Do not use on production."
+msgstr "Mostra os posts de variantes no painel administrativo e ativa o log de depuração. Não use em produção."
+
+#: src/Admin/views/settings.php:196
+msgid "Clean Up Unused Variants"
+msgstr "Limpar variantes não utilizadas"
+
+#: src/Admin/views/settings.php:198
+msgid "Permanently deletes variant posts that are no longer linked to any test. Run this after deleting tests outside of the plugin."
+msgstr "Exclui permanentemente os posts de variantes que não estão mais vinculados a nenhum teste. Execute isso após excluir testes fora do plugin."
+
+#: src/Admin/views/settings.php:201
+msgid "Delete unused variants"
+msgstr "Excluir variantes não utilizadas"
+
+#: src/Admin/views/settings.php:210
+msgid "Save Settings"
+msgstr "Salvar configurações"
+
+#: src/Admin/views/settings.php:228
+msgid "Testing…"
+msgstr "Testando…"
+
+#: src/Admin/views/settings.php:248
+msgid "Connection failed"
+msgstr "Falha na conexão"
+
+#: src/Admin/views/settings.php:253
+msgid "Request failed — check browser console."
+msgstr "Falha na requisição — verifique o console do navegador."
+
+#: src/Admin/views/settings.php:273
+msgid "This will permanently delete all variant posts not linked to a test. Continue?"
+msgstr "Isso excluirá permanentemente todos os posts de variantes não vinculados a um teste. Continuar?"
+
+#: src/Admin/views/settings.php:277
+msgid "Cleaning up…"
+msgstr "Limpando…"
+
+#: src/Admin/views/settings.php:294
+msgid "No unused variants found."
+msgstr "Nenhuma variante não utilizada encontrada."
+
+#: src/Admin/views/settings.php:295
+msgid "variant(s) deleted."
+msgstr "variante(s) excluída(s)."
+
+#: src/Admin/views/settings.php:298
+msgid "Cleanup failed."
+msgstr "Falha na limpeza."
+
+#: src/Admin/views/settings.php:303
+msgid "Request failed."
+msgstr "Falha na requisição."
+
+#: src/Admin/views/test-list.php:18
+msgid "Connect your site to SplitPress"
+msgstr "Conecte seu site ao SplitPress"
+
+#: src/Admin/views/test-list.php:20
+msgid "Add your API key to start running backend A/B tests — no flicker, no front-end redirects."
+msgstr "Adicione sua chave de API para começar a executar testes A/B no servidor — sem conteúdo piscando, sem redirecionamentos."
+
+#: src/Admin/views/test-list.php:23
+msgid "Go to Settings"
+msgstr "Ir para Configurações"
+
+#: src/Admin/views/test-list.php:34
+msgid "Loading SplitPress…"
+msgstr "Carregando SplitPress…"
+
+#: src/Admin/views/variants.php:29
+msgid "Posts created by SplitPress as variant copies"
+msgstr "Posts criados pelo SplitPress como cópias de variantes"
+
+#: src/Admin/views/variants.php:35
+msgid "No variant posts found. Variants are created when you clone a test."
+msgstr "Nenhum post de variante encontrado. As variantes são criadas quando você clona um teste."
+
+#: src/Admin/views/variants.php:60
+msgid "Variant Title"
+msgstr "Título da variante"
+
+#: src/Admin/views/variants.php:61
+msgid "Original Post"
+msgstr "Post original"
+
+#: src/Admin/views/variants.php:62
+msgid "Test"
+msgstr "Teste"
+
+#: src/Admin/views/variants.php:63
+msgid "Status"
+msgstr "Status"
+
+#: src/Admin/views/variants.php:64
+msgid "Created"
+msgstr "Criado"
+
+#: src/Admin/views/variants.php:77
+#: src/Admin/views/variants.php:83
+msgid "(no title)"
+msgstr "(sem título)"
