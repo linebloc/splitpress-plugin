@@ -1,13 +1,13 @@
 <?php
 
-namespace SplitPress\Core;
+namespace SplitEvo\Core;
 
-use SplitPress\Api\Manifest;
+use SplitEvo\Api\Manifest;
 
 defined('ABSPATH') || exit;
 
 /**
- * Backend variant assignment — the core differentiator of SplitPress.
+ * Backend variant assignment — the core differentiator of SplitEvo.
  *
  * Hooks into `template_redirect` (before any output) to transparently replace
  * the original post's content with the assigned variant's content. The URL,
@@ -61,7 +61,7 @@ class Assignor
         }
 
         // Skip variant posts — they are not test targets themselves.
-        if (get_post_meta($post->ID, '_splitpress_variant', true)) {
+        if (get_post_meta($post->ID, '_splitevo_variant', true)) {
             return;
         }
 
@@ -121,7 +121,7 @@ class Assignor
         global $wp_query, $post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
         $original->post_content = $variant->post_content;
-        $original->post_title   = $variant->post_title;
+        $original->post_title = $variant->post_title;
 
         // Keep WP internals consistent with the modified original.
         $wp_query->posts = [$original];
@@ -165,7 +165,7 @@ class Assignor
     private function inject_context(array $test, int $variant_index, int $post_id): void
     {
         add_filter(
-            'splitpress_tracker_context',
+            'splitevo_tracker_context',
             function () use ($test, $variant_index, $post_id): array {
                 return [
                     'test_id' => $test['id'],

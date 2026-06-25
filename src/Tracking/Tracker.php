@@ -1,10 +1,10 @@
 <?php
 
-namespace SplitPress\Tracking;
+namespace SplitEvo\Tracking;
 
-use SplitPress\Api\Client;
-use SplitPress\Api\Manifest;
-use SplitPress\Core\Options;
+use SplitEvo\Api\Client;
+use SplitEvo\Api\Manifest;
+use SplitEvo\Core\Options;
 
 defined('ABSPATH') || exit;
 
@@ -21,8 +21,8 @@ class Tracker
     public function register(): void
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue']);
-        add_action('wp_ajax_nopriv_splitpress_event', [$this, 'handle_ajax_event']);
-        add_action('wp_ajax_splitpress_event', [$this, 'handle_ajax_event']);
+        add_action('wp_ajax_nopriv_splitevo_event', [$this, 'handle_ajax_event']);
+        add_action('wp_ajax_splitevo_event', [$this, 'handle_ajax_event']);
     }
 
     public function enqueue(): void
@@ -32,7 +32,7 @@ class Tracker
         }
 
         // Context is set by Assignor only when a test is active on this page.
-        $context = apply_filters('splitpress_tracker_context', null);
+        $context = apply_filters('splitevo_tracker_context', null);
 
         if ($context === null) {
             return;
@@ -40,18 +40,18 @@ class Tracker
 
         wp_enqueue_script(
             'splitpress-tracker',
-            SPLITPRESS_URL.'assets/js/tracker.js',
+            SPLITEVO_URL.'assets/js/tracker.js',
             [],
-            SPLITPRESS_VERSION,
+            SPLITEVO_VERSION,
             ['strategy' => 'defer']
         );
 
         wp_localize_script(
             'splitpress-tracker',
-            'SplitPressConfig',
+            'SplitEvoConfig',
             [
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('splitpress_event'),
+                'nonce' => wp_create_nonce('splitevo_event'),
                 'context' => $context,
                 'goals' => $this->get_goals($context['test_id']),
             ]
@@ -64,7 +64,7 @@ class Tracker
      */
     public function handle_ajax_event(): void
     {
-        check_ajax_referer('splitpress_event', 'nonce');
+        check_ajax_referer('splitevo_event', 'nonce');
 
         // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON string; individual event fields are sanitized in sanitize_event().
         $raw = isset($_POST['events']) ? wp_unslash($_POST['events']) : null;
@@ -121,7 +121,7 @@ class Tracker
         }
 
         $visitor_id = sanitize_text_field($event['visitor_id'] ?? '');
-        if (! preg_match('/^splitpress_[a-f0-9]{32}$/', $visitor_id)) {
+        if (! preg_match('/^splitevo_[a-f0-9]{32}$/', $visitor_id)) {
             return null;
         }
 

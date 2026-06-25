@@ -1,6 +1,6 @@
 <?php
 
-namespace SplitPress\Core;
+namespace SplitEvo\Core;
 
 defined('ABSPATH') || exit;
 
@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
  */
 class Visitor
 {
-    private const COOKIE_NAME = 'splitpress_vid';
+    private const COOKIE_NAME = 'splitevo_vid';
 
     private const COOKIE_TTL = YEAR_IN_SECONDS;
 
@@ -60,12 +60,12 @@ class Visitor
 
     private static function generate_id(): string
     {
-        return 'splitpress_'.bin2hex(random_bytes(16));
+        return 'splitevo_'.bin2hex(random_bytes(16));
     }
 
     private static function is_valid_id(string $value): bool
     {
-        return (bool) preg_match('/^splitpress_[a-f0-9]{32}$/', $value);
+        return (bool) preg_match('/^splitevo_[a-f0-9]{32}$/', $value);
     }
 
     private static function set_cookie(string $id): void

@@ -1,16 +1,16 @@
 <?php
 
-namespace SplitPress\Core;
+namespace SplitEvo\Core;
 
-use SplitPress\Admin\AdminMenu;
-use SplitPress\Admin\CreateTestPage;
-use SplitPress\Admin\SettingsPage;
-use SplitPress\Admin\TestDetailPage;
-use SplitPress\Admin\TestListPage;
-use SplitPress\Admin\VariantsPage;
-use SplitPress\Api\Manifest;
-use SplitPress\PostTypes\VariantPostType;
-use SplitPress\Tracking\Tracker;
+use SplitEvo\Admin\AdminMenu;
+use SplitEvo\Admin\CreateTestPage;
+use SplitEvo\Admin\SettingsPage;
+use SplitEvo\Admin\TestDetailPage;
+use SplitEvo\Admin\TestListPage;
+use SplitEvo\Admin\VariantsPage;
+use SplitEvo\Api\Manifest;
+use SplitEvo\PostTypes\VariantPostType;
+use SplitEvo\Tracking\Tracker;
 
 defined('ABSPATH') || exit;
 
@@ -40,7 +40,7 @@ final class Plugin
         // Custom post types (must run early for rewrite rules).
         (new VariantPostType)->register();
 
-        // REST endpoint for instant manifest invalidation from the SplitPress app.
+        // REST endpoint for instant manifest invalidation from the SplitEvo app.
         Manifest::register_flush_endpoint();
 
         // Admin UI.

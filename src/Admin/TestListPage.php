@@ -1,10 +1,10 @@
 <?php
 
-namespace SplitPress\Admin;
+namespace SplitEvo\Admin;
 
-use SplitPress\Api\Client;
-use SplitPress\Api\Manifest;
-use SplitPress\Core\Options;
+use SplitEvo\Api\Client;
+use SplitEvo\Api\Manifest;
+use SplitEvo\Core\Options;
 
 defined('ABSPATH') || exit;
 
@@ -12,13 +12,13 @@ class TestListPage
 {
     public function register(): void
     {
-        add_action('wp_ajax_splitpress_get_tests', [$this, 'ajax_get_tests']);
-        add_action('wp_ajax_splitpress_flush_manifest', [$this, 'ajax_flush_manifest']);
+        add_action('wp_ajax_splitevo_get_tests', [$this, 'ajax_get_tests']);
+        add_action('wp_ajax_splitevo_flush_manifest', [$this, 'ajax_flush_manifest']);
     }
 
     public function ajax_flush_manifest(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! Options::user_can('view')) {
             wp_send_json_error(null, 403);
@@ -31,17 +31,17 @@ class TestListPage
     public function render(): void
     {
         if (! Options::user_can('view')) {
-            wp_die(esc_html__('Insufficient permissions.', 'splitpress'));
+            wp_die(esc_html__('Insufficient permissions.', 'splitevo'));
         }
 
         $is_configured = Options::is_configured();
 
-        include SPLITPRESS_DIR.'src/Admin/views/test-list.php';
+        include SPLITEVO_DIR.'src/Admin/views/test-list.php';
     }
 
     public function ajax_get_tests(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! Options::user_can('view')) {
             wp_send_json_error(null, 403);
@@ -50,7 +50,7 @@ class TestListPage
         $response = $this->fetch_tests();
 
         if ($response === null) {
-            wp_send_json_error(['message' => __('Unable to reach SplitPress API. Check your API key in Settings.', 'splitpress')], 502);
+            wp_send_json_error(['message' => __('Unable to reach SplitEvo API. Check your API key in Settings.', 'splitevo')], 502);
 
             return;
         }

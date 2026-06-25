@@ -1,10 +1,10 @@
 <?php
 
-namespace SplitPress\Admin;
+namespace SplitEvo\Admin;
 
-use SplitPress\Api\Client;
-use SplitPress\Api\Manifest;
-use SplitPress\Core\Options;
+use SplitEvo\Api\Client;
+use SplitEvo\Api\Manifest;
+use SplitEvo\Core\Options;
 
 defined('ABSPATH') || exit;
 
@@ -12,35 +12,35 @@ class SettingsPage
 {
     public function register(): void
     {
-        add_action('admin_post_splitpress_save_settings', [$this, 'handle_save']);
-        add_action('wp_ajax_splitpress_test_connection', [$this, 'ajax_test_connection']);
-        add_action('wp_ajax_splitpress_cleanup_orphans', [$this, 'ajax_cleanup_orphans']);
+        add_action('admin_post_splitevo_save_settings', [$this, 'handle_save']);
+        add_action('wp_ajax_splitevo_test_connection', [$this, 'ajax_test_connection']);
+        add_action('wp_ajax_splitevo_cleanup_orphans', [$this, 'ajax_cleanup_orphans']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_settings_scripts']);
     }
 
     public function enqueue_settings_scripts(string $hook): void
     {
-        if ($hook !== 'splitpress_page_splitpress-settings') {
+        if ($hook !== 'splitevo_page_splitpress-settings') {
             return;
         }
 
-        wp_register_script('splitpress-settings', false, [], SPLITPRESS_VERSION, true);
+        wp_register_script('splitpress-settings', false, [], SPLITEVO_VERSION, true);
         wp_enqueue_script('splitpress-settings');
 
         wp_localize_script('splitpress-settings', 'splitpressSettingsCfg', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('splitpress_admin'),
+            'nonce' => wp_create_nonce('splitevo_admin'),
             'i18n' => [
-                'testing' => __('Testing…', 'splitpress'),
-                'connected' => __('Connected', 'splitpress'),
-                'connFailed' => __('Connection failed', 'splitpress'),
-                'reqFailed' => __('Request failed — check browser console.', 'splitpress'),
-                'cleaning' => __('Cleaning up…', 'splitpress'),
-                'noOrphans' => __('No unused variants found.', 'splitpress'),
-                'varDeleted' => __('variant(s) deleted.', 'splitpress'),
-                'cleanFailed' => __('Cleanup failed.', 'splitpress'),
-                'netFailed' => __('Request failed.', 'splitpress'),
-                'confirmClean' => __('This will permanently delete all variant posts not linked to a test. Continue?', 'splitpress'),
+                'testing' => __('Testing…', 'splitevo'),
+                'connected' => __('Connected', 'splitevo'),
+                'connFailed' => __('Connection failed', 'splitevo'),
+                'reqFailed' => __('Request failed — check browser console.', 'splitevo'),
+                'cleaning' => __('Cleaning up…', 'splitevo'),
+                'noOrphans' => __('No unused variants found.', 'splitevo'),
+                'varDeleted' => __('variant(s) deleted.', 'splitevo'),
+                'cleanFailed' => __('Cleanup failed.', 'splitevo'),
+                'netFailed' => __('Request failed.', 'splitevo'),
+                'confirmClean' => __('This will permanently delete all variant posts not linked to a test. Continue?', 'splitevo'),
             ],
         ]);
 
@@ -68,7 +68,7 @@ class SettingsPage
                 label.textContent = cfg.i18n.testing;
 
                 var body = new FormData();
-                body.append('action', 'splitpress_test_connection');
+                body.append('action', 'splitevo_test_connection');
                 body.append('nonce', cfg.nonce);
 
                 fetch(cfg.ajaxUrl, {
@@ -121,7 +121,7 @@ class SettingsPage
                 cleanupResult.style.color = '';
 
                 var body = new FormData();
-                body.append('action', 'splitpress_cleanup_orphans');
+                body.append('action', 'splitevo_cleanup_orphans');
                 body.append('nonce', cfg.nonce);
 
                 fetch(cfg.ajaxUrl, {
@@ -156,7 +156,7 @@ class SettingsPage
 
     public function ajax_cleanup_orphans(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! current_user_can('manage_options')) {
             wp_send_json_error(null, 403);
@@ -165,7 +165,7 @@ class SettingsPage
         $all_tests = (new Client)->get_tests();
 
         if ($all_tests === null) {
-            wp_send_json_error(['message' => 'Could not reach the SplitPress API. Restore the connection before cleaning up.']);
+            wp_send_json_error(['message' => 'Could not reach the SplitEvo API. Restore the connection before cleaning up.']);
 
             return;
         }
@@ -185,7 +185,7 @@ class SettingsPage
         $variant_post_ids = $wpdb->get_col(
             $wpdb->prepare(
                 "SELECT DISTINCT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s",
-                '_splitpress_variant',
+                '_splitevo_variant',
                 '1'
             )
         );
@@ -193,7 +193,7 @@ class SettingsPage
         $deleted = 0;
         foreach ($variant_post_ids as $raw_id) {
             $post_id = (int) $raw_id;
-            $test_id = (string) get_post_meta($post_id, '_splitpress_test_id', true);
+            $test_id = (string) get_post_meta($post_id, '_splitevo_test_id', true);
 
             if (! $test_id || ! isset($known_ids[$test_id])) {
                 wp_delete_post($post_id, true);
@@ -206,7 +206,7 @@ class SettingsPage
 
     public function ajax_test_connection(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! current_user_can('manage_options')) {
             wp_send_json_error(null, 403);
@@ -224,7 +224,7 @@ class SettingsPage
     public function render(): void
     {
         if (! current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'splitpress'));
+            wp_die(esc_html__('Insufficient permissions.', 'splitevo'));
         }
 
         $api_key = Options::api_key();
@@ -237,16 +237,16 @@ class SettingsPage
         $is_configured = Options::is_configured();
         $cache_plugin = $this->detect_cache_plugin();
 
-        include SPLITPRESS_DIR.'src/Admin/views/settings.php';
+        include SPLITEVO_DIR.'src/Admin/views/settings.php';
     }
 
     public function handle_save(): void
     {
         if (! current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'splitpress'));
+            wp_die(esc_html__('Insufficient permissions.', 'splitevo'));
         }
 
-        check_admin_referer('splitpress_settings_save');
+        check_admin_referer('splitevo_settings_save');
 
         // phpcs:disable WordPress.Security.NonceVerification
         $api_key = sanitize_text_field(wp_unslash($_POST['api_key'] ?? ''));

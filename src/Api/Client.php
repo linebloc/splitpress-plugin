@@ -1,13 +1,13 @@
 <?php
 
-namespace SplitPress\Api;
+namespace SplitEvo\Api;
 
-use SplitPress\Core\Options;
+use SplitEvo\Core\Options;
 
 defined('ABSPATH') || exit;
 
 /**
- * HTTP client for communicating with the SplitPress Laravel API.
+ * HTTP client for communicating with the SplitEvo Laravel API.
  * All requests are HMAC-signed with the site API key.
  */
 class Client
@@ -96,7 +96,7 @@ class Client
             401 => 'Invalid API key.',
             403 => 'Domain mismatch — this WordPress domain is not registered for this API key.',
             429 => 'Rate limit reached.',
-            502 => 'Could not reach the SplitPress API server.',
+            502 => 'Could not reach the SplitEvo API server.',
         ];
 
         return [
@@ -328,10 +328,10 @@ class Client
     private function headers(string $signature, int $timestamp): array
     {
         return [
-            'X-SplitPress-Key' => $this->api_key,
-            'X-SplitPress-Timestamp' => (string) $timestamp,
-            'X-SplitPress-Signature' => $signature,
-            'X-SplitPress-Domain' => wp_parse_url(home_url(), PHP_URL_HOST),
+            'X-SplitEvo-Key' => $this->api_key,
+            'X-SplitEvo-Timestamp' => (string) $timestamp,
+            'X-SplitEvo-Signature' => $signature,
+            'X-SplitEvo-Domain' => wp_parse_url(home_url(), PHP_URL_HOST),
             'Accept' => 'application/json',
         ];
     }

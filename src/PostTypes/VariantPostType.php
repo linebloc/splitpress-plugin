@@ -1,13 +1,13 @@
 <?php
 
-namespace SplitPress\PostTypes;
+namespace SplitEvo\PostTypes;
 
 defined('ABSPATH') || exit;
 
 /**
  * Controls how A/B variant posts behave in WordPress.
  *
- * Variants are regular posts/pages marked with the `_splitpress_variant` meta flag.
+ * Variants are regular posts/pages marked with the `_splitevo_variant` meta flag.
  * No custom post type is registered — variants inherit the original post type so
  * they get the correct theme template, comments support, and all post-type features.
  */
@@ -38,7 +38,7 @@ class VariantPostType
 
         $meta_query = $query->get('meta_query') ?: [];
         $meta_query[] = [
-            'key' => '_splitpress_variant',
+            'key' => '_splitevo_variant',
             'compare' => 'NOT EXISTS',
         ];
         $query->set('meta_query', $meta_query);
@@ -55,11 +55,11 @@ class VariantPostType
             return $settings;
         }
 
-        if (! get_post_meta($post->ID, '_splitpress_variant', true)) {
+        if (! get_post_meta($post->ID, '_splitevo_variant', true)) {
             return $settings;
         }
 
-        $test_id = (string) get_post_meta($post->ID, '_splitpress_test_id', true);
+        $test_id = (string) get_post_meta($post->ID, '_splitevo_test_id', true);
         $settings['dashboardLink'] = $this->back_url($test_id);
 
         return $settings;
@@ -81,22 +81,22 @@ class VariantPostType
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 
-        if (! $post_id || ! get_post_meta($post_id, '_splitpress_variant', true)) {
+        if (! $post_id || ! get_post_meta($post_id, '_splitevo_variant', true)) {
             return;
         }
 
         // Active variants are redirected away in redirect_if_active(); no modal needed.
-        if (get_post_meta($post_id, '_splitpress_test_status', true) === 'active') {
+        if (get_post_meta($post_id, '_splitevo_test_status', true) === 'active') {
             return;
         }
 
-        $test_id = (string) get_post_meta($post_id, '_splitpress_test_id', true);
+        $test_id = (string) get_post_meta($post_id, '_splitevo_test_id', true);
 
         wp_enqueue_script(
             'splitpress-variant-editor',
-            SPLITPRESS_URL.'assets/js/variant-editor.js',
+            SPLITEVO_URL.'assets/js/variant-editor.js',
             ['wp-plugins', 'wp-components', 'wp-element'],
-            SPLITPRESS_VERSION,
+            SPLITEVO_VERSION,
             true
         );
 
@@ -145,21 +145,21 @@ class VariantPostType
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 
-        if (! $post_id || ! get_post_meta($post_id, '_splitpress_variant', true)) {
+        if (! $post_id || ! get_post_meta($post_id, '_splitevo_variant', true)) {
             return;
         }
 
-        if (get_post_meta($post_id, '_splitpress_test_status', true) !== 'active') {
+        if (get_post_meta($post_id, '_splitevo_test_status', true) !== 'active') {
             return;
         }
 
-        $test_id = (string) get_post_meta($post_id, '_splitpress_test_id', true);
+        $test_id = (string) get_post_meta($post_id, '_splitevo_test_id', true);
         wp_safe_redirect($this->back_url($test_id));
         exit;
     }
 
     /**
-     * Build the SplitPress back URL, linking to the specific test if we know the ID.
+     * Build the SplitEvo back URL, linking to the specific test if we know the ID.
      */
     private function back_url(string $test_id): string
     {

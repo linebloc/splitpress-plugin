@@ -1,25 +1,27 @@
 <?php
 
-namespace SplitPress\Core;
+namespace SplitEvo\Core;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class Autoloader {
+class Autoloader
+{
+    public static function register(): void
+    {
+        spl_autoload_register([static::class, 'load']);
+    }
 
-	public static function register(): void {
-		spl_autoload_register( array( static::class, 'load' ) );
-	}
+    public static function load(string $class): void
+    {
+        if (strpos($class, 'SplitEvo\\') !== 0) {
+            return;
+        }
 
-	public static function load( string $class ): void {
-		if ( strpos( $class, 'SplitPress\\' ) !== 0 ) {
-			return;
-		}
+        $relative = substr($class, strlen('SplitEvo\\'));
+        $path = SPLITEVO_DIR.'src/'.str_replace('\\', '/', $relative).'.php';
 
-		$relative = substr( $class, strlen( 'SplitPress\\' ) );
-		$path     = SPLITPRESS_DIR . 'src/' . str_replace( '\\', '/', $relative ) . '.php';
-
-		if ( file_exists( $path ) ) {
-			require_once $path;
-		}
-	}
+        if (file_exists($path)) {
+            require_once $path;
+        }
+    }
 }

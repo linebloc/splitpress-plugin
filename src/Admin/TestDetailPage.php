@@ -1,11 +1,11 @@
 <?php
 
-namespace SplitPress\Admin;
+namespace SplitEvo\Admin;
 
-use SplitPress\Api\Client;
-use SplitPress\Api\Manifest;
-use SplitPress\Core\Options;
-use SplitPress\Core\VariantCloner;
+use SplitEvo\Api\Client;
+use SplitEvo\Api\Manifest;
+use SplitEvo\Core\Options;
+use SplitEvo\Core\VariantCloner;
 
 defined('ABSPATH') || exit;
 
@@ -13,13 +13,13 @@ class TestDetailPage
 {
     public function register(): void
     {
-        add_action('wp_ajax_splitpress_get_test', [$this, 'ajax_get_test']);
-        add_action('wp_ajax_splitpress_test_action', [$this, 'ajax_test_action']);
+        add_action('wp_ajax_splitevo_get_test', [$this, 'ajax_get_test']);
+        add_action('wp_ajax_splitevo_test_action', [$this, 'ajax_test_action']);
     }
 
     public function ajax_get_test(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! Options::user_can('view')) {
             wp_send_json_error(null, 403);
@@ -36,7 +36,7 @@ class TestDetailPage
         $test = (new Client)->get_test($test_id);
 
         if ($test === null) {
-            wp_send_json_error(['message' => __('Unable to reach SplitPress API. Check your connection in Settings.', 'splitpress')], 502);
+            wp_send_json_error(['message' => __('Unable to reach SplitEvo API. Check your connection in Settings.', 'splitevo')], 502);
 
             return;
         }
@@ -46,7 +46,7 @@ class TestDetailPage
         // and any other drift caused by external changes.
         $post_ids = $this->get_variant_post_ids($test_id);
         if (! empty($post_ids)) {
-            $stored = (string) get_post_meta($post_ids[0], '_splitpress_test_status', true);
+            $stored = (string) get_post_meta($post_ids[0], '_splitevo_test_status', true);
             $api_status = $test['status'] ?? '';
             if ($api_status && $stored !== $api_status) {
                 $this->sync_variant_post_status($test_id, $api_status);
@@ -74,7 +74,7 @@ class TestDetailPage
 
     public function ajax_test_action(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         $test_id = sanitize_text_field(wp_unslash($_POST['test_id'] ?? ''));
         $action = sanitize_key(wp_unslash($_POST['test_action'] ?? ''));
@@ -229,15 +229,15 @@ class TestDetailPage
             wp_send_json_error('Failed to create clone.');
         }
 
-        update_post_meta($clone_id, '_splitpress_test_id', $new_test_id);
-        update_post_meta($clone_id, '_splitpress_test_status', 'draft');
+        update_post_meta($clone_id, '_splitevo_test_id', $new_test_id);
+        update_post_meta($clone_id, '_splitevo_test_status', 'draft');
         Manifest::flush();
 
         wp_send_json_success(['action' => 'clone', 'test_id' => $new_test_id]);
     }
 
     /**
-     * Keep _splitpress_test_status and WP post_status in sync for all variant posts.
+     * Keep _splitevo_test_status and WP post_status in sync for all variant posts.
      * Active tests publish the variant; every other status keeps it draft so it
      * cannot be accessed directly on the frontend.
      */
@@ -246,7 +246,7 @@ class TestDetailPage
         $wp_status = $status === 'active' ? 'publish' : 'draft';
 
         foreach ($this->get_variant_post_ids($test_id) as $post_id) {
-            update_post_meta($post_id, '_splitpress_test_status', $status);
+            update_post_meta($post_id, '_splitevo_test_status', $status);
             wp_update_post(['ID' => $post_id, 'post_status' => $wp_status]);
         }
     }
@@ -263,9 +263,9 @@ class TestDetailPage
     }
 
     /**
-     * Returns IDs of all WP posts linked to a test via _splitpress_test_id.
+     * Returns IDs of all WP posts linked to a test via _splitevo_test_id.
      * Uses a direct DB query to bypass the pre_get_posts hook that appends
-     * _splitpress_variant NOT EXISTS and would exclude every variant post.
+     * _splitevo_variant NOT EXISTS and would exclude every variant post.
      *
      * @return int[]
      */
@@ -277,7 +277,7 @@ class TestDetailPage
         $ids = $wpdb->get_col(
             $wpdb->prepare(
                 "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s",
-                '_splitpress_test_id',
+                '_splitevo_test_id',
                 $test_id
             )
         );
@@ -297,12 +297,12 @@ class TestDetailPage
 
         $variant = get_post($variant_post_id);
 
-        if (! $variant || get_post_meta($variant_post_id, '_splitpress_test_id', true) !== $test_id) {
+        if (! $variant || get_post_meta($variant_post_id, '_splitevo_test_id', true) !== $test_id) {
             wp_send_json_error('Variant not found or does not belong to this test.');
         }
 
         // Prefer the explicit meta; fall back to post_parent for older variants.
-        $original_id = (int) get_post_meta($variant_post_id, '_splitpress_control_post_id', true);
+        $original_id = (int) get_post_meta($variant_post_id, '_splitevo_control_post_id', true);
         if (! $original_id) {
             $original_id = (int) $variant->post_parent;
         }
@@ -324,7 +324,7 @@ class TestDetailPage
             if (
                 strpos($key, '_edit_') === 0 ||
                 strpos($key, '_wp_') === 0 ||
-                strpos($key, '_splitpress_') === 0
+                strpos($key, '_splitevo_') === 0
             ) {
                 continue;
             }

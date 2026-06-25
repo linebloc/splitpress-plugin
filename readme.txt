@@ -1,4 +1,4 @@
-=== SplitPress ===
+=== SplitEvo ===
 Contributors: linebloc, rodrigomantoan
 Tags: a/b testing, split testing, conversion optimization, cro, experiments
 Requires at least: 6.0
@@ -12,11 +12,11 @@ Backend A/B testing for WordPress. Variant assignment happens server-side — no
 
 == Description ==
 
-**SplitPress picks the variant on the server before the page loads** — so visitors never see a flash of the wrong content, and every variant lives at the same URL.
+**SplitEvo picks the variant on the server before the page loads** — so visitors never see a flash of the wrong content, and every variant lives at the same URL.
 
 Most A/B testing tools swap content using JavaScript after the page has already started rendering. That causes a brief "flash" of the original before the variant snaps in. Others create separate URLs for each variant, which introduces duplicate content risks and leaves behind 404s when a test ends.
 
-SplitPress works differently:
+SplitEvo works differently:
 
 * **Server-side assignment** — the variant is chosen in PHP, before `wp_head`, so the correct version is served from the very first byte.
 * **Same URL for every variant** — no duplicate pages, no SEO risk, no broken links when a test ends.
@@ -33,11 +33,11 @@ SplitPress works differently:
 * **Element view** — fire when a specific element scrolls into the viewport (IntersectionObserver).
 * **Form submission** — track any form (Contact Form 7, WPForms, Gravity Forms, native HTML).
 * **Video play** — track first play of YouTube, Vimeo, or HTML5 video.
-* **External event** — fire a conversion from GA4, GTM, Meta Pixel, or any custom JavaScript via `window.SplitPress.trackEvent()`.
+* **External event** — fire a conversion from GA4, GTM, Meta Pixel, or any custom JavaScript via `window.SplitEvo.trackEvent()`.
 
 = Plans =
 
-SplitPress is a hosted service. A free plan is available with no credit card required. See [splitpress.app/pricing](https://splitpress.app/pricing) for current plan details.
+SplitEvo is a hosted service. A free plan is available with no credit card required. See [splitevo.app/pricing](https://splitevo.app/pricing) for current plan details.
 
 = Source code =
 
@@ -45,19 +45,19 @@ The plugin admin dashboard (`assets/js/dashboard.js`) is compiled from a React/V
 
 == Installation ==
 
-1. In your WordPress admin, go to **Plugins → Add New**, search for "SplitPress", and click **Install Now**, then **Activate**.
-2. Create a free account at [splitpress.app](https://splitpress.app).
-3. In the SplitPress dashboard go to **Settings → Sites** and copy your site's API key.
-4. In your WordPress admin go to **SplitPress → Settings** and paste the API key.
-5. Click **Save Settings**. SplitPress will connect to your account immediately.
+1. In your WordPress admin, go to **Plugins → Add New**, search for "SplitEvo", and click **Install Now**, then **Activate**.
+2. Create a free account at [splitevo.app](https://splitevo.app).
+3. In the SplitEvo dashboard go to **Settings → Sites** and copy your site's API key.
+4. In your WordPress admin go to **SplitEvo → Settings** and paste the API key.
+5. Click **Save Settings**. SplitEvo will connect to your account immediately.
 
-To create your first test, go to **SplitPress → A/B Tests → New Test**, select the page or post you want to test, and duplicate it as a variant. Edit the variant with any page builder, then activate the test.
+To create your first test, go to **SplitEvo → A/B Tests → New Test**, select the page or post you want to test, and duplicate it as a variant. Edit the variant with any page builder, then activate the test.
 
 == Frequently Asked Questions ==
 
 = Does this require a paid subscription? =
 
-No. We have Free plan, which includes 1 website, 1 concurrent active test, and 500 tracked visitors per month with no credit card required. Sign up at [splitpress.app](https://splitpress.app).
+No. We have Free plan, which includes 1 website, 1 concurrent active test, and 500 tracked visitors per month with no credit card required. Sign up at [splitevo.app](https://splitevo.app).
 
 = Will it slow down my site? =
 
@@ -65,11 +65,11 @@ Minimal impact. The test manifest is cached in a WordPress transient and refresh
 
 = Does it work with my page builder? =
 
-Yes. Variants are real WordPress posts, so they work with any builder that edits standard posts or pages: Gutenberg, Elementor, Divi, Bricks, Oxygen, or the Classic Editor. SplitPress creates a hidden clone of your original post for each variant and serves it at the same URL.
+Yes. Variants are real WordPress posts, so they work with any builder that edits standard posts or pages: Gutenberg, Elementor, Divi, Bricks, Oxygen, or the Classic Editor. SplitEvo creates a hidden clone of your original post for each variant and serves it at the same URL.
 
 = Is it compatible with caching plugins? =
 
-Because SplitPress assigns variants server-side, full-page caching can interfere — a cached page will serve the same variant to all visitors. SplitPress will show a warning in the admin when it detects WP Rocket, W3 Total Cache, WP Super Cache, LiteSpeed Cache, WP Fastest Cache, or SiteGround Optimizer. Exclude your test pages from the cache or configure a bypass rule in your cache plugin.
+Because SplitEvo assigns variants server-side, full-page caching can interfere — a cached page will serve the same variant to all visitors. SplitEvo will show a warning in the admin when it detects WP Rocket, W3 Total Cache, WP Super Cache, LiteSpeed Cache, WP Fastest Cache, or SiteGround Optimizer. Exclude your test pages from the cache or configure a bypass rule in your cache plugin.
 
 = Will running tests affect my SEO? =
 
@@ -81,35 +81,35 @@ Not yet. Multisite support is planned for a future release.
 
 = Where is visitor data stored? =
 
-All event and visitor data is stored on SplitPress servers (splitpress.app). See the Privacy Policy section for details on what data is collected.
+All event and visitor data is stored on SplitEvo servers (splitevo.app). See the Privacy Policy section for details on what data is collected.
 
-= Can I self-host the SplitPress API? =
+= Can I self-host the SplitEvo API? =
 
-The SplitPress API is currently a hosted-only service. If you are interested in self-hosted options please contact us at [splitpress.app](https://splitpress.app).
+The SplitEvo API is currently a hosted-only service. If you are interested in self-hosted options please contact us at [splitevo.app](https://splitevo.app).
 
 == External Services ==
 
-This plugin connects to the **SplitPress** hosted service at https://splitpress.app to provide its core functionality. By using this plugin you are agreeing to the SplitPress Terms of Service and Privacy Policy.
+This plugin connects to the **SplitEvo** hosted service at https://splitevo.app to provide its core functionality. By using this plugin you are agreeing to the SplitEvo Terms of Service and Privacy Policy.
 
-**When the plugin contacts splitpress.app:**
+**When the plugin contacts splitevo.app:**
 
 * On the first frontend page load after the transient expires (every ~5 minutes per site), to fetch the active test manifest.
 * When a visitor triggers a tracked event (page view, click, scroll, etc.), to record analytics. Events are batched and sent through WordPress admin-ajax — the API key never reaches the browser.
 * When you click "Test connection" in the plugin settings.
 * When you create, update, pause, or delete a test from the WordPress admin.
-* When the SplitPress app pushes a cache-invalidation signal (e.g. after a test change).
+* When the SplitEvo app pushes a cache-invalidation signal (e.g. after a test change).
 
-**Data transmitted to splitpress.app:**
+**Data transmitted to splitevo.app:**
 
 * An anonymous visitor ID (a random token stored in a first-party cookie — not linked to any personal identity).
 * The current page URL.
 * Test and variant identifiers.
 * Behavioral events: page view, goal page reached, click, scroll depth, time on page, element view, form submission, video play.
 
-No IP addresses, names, email addresses, or other personally identifying information are transmitted from the plugin to the SplitPress API.
+No IP addresses, names, email addresses, or other personally identifying information are transmitted from the plugin to the SplitEvo API.
 
-* [Terms of Service](https://splitpress.app/terms)
-* [Privacy Policy](https://splitpress.app/privacy)
+* [Terms of Service](https://splitevo.app/terms)
+* [Privacy Policy](https://splitevo.app/privacy)
 
 When a test includes a **Video Play** goal, the plugin also loads third-party scripts conditionally:
 
@@ -122,7 +122,7 @@ These scripts are subject to YouTube's ([Terms](https://www.youtube.com/t/terms)
 
 = Cookies =
 
-When a visitor arrives on a page with an active A/B test, SplitPress sets a first-party cookie named `splitpress_vid` containing a random anonymous visitor ID. This cookie:
+When a visitor arrives on a page with an active A/B test, SplitEvo sets a first-party cookie named `splitevo_vid` containing a random anonymous visitor ID. This cookie:
 
 * Is `HttpOnly` (not accessible to JavaScript).
 * Uses `SameSite=Lax`.
@@ -132,11 +132,11 @@ When a visitor arrives on a page with an active A/B test, SplitPress sets a firs
 
 The cookie is used solely to assign the same visitor to the same variant on repeat visits (stable assignment).
 
-= Data sent to splitpress.app =
+= Data sent to splitevo.app =
 
-The following data is sent to the SplitPress API (https://splitpress.app):
+The following data is sent to the SplitEvo API (https://splitevo.app):
 
-* The anonymous `splitpress_vid` visitor ID.
+* The anonymous `splitevo_vid` visitor ID.
 * The URL of the current page.
 * The active test ID and the assigned variant ID.
 * Behavioral events: page view, goal-page reached, click, scroll depth, time on page, element in viewport, form submission, video play.
@@ -145,8 +145,8 @@ No IP addresses, names, email addresses, or other personally identifying informa
 
 = Responsibility of site owners =
 
-If your visitors are located in the EU or other regions governed by privacy regulations (GDPR, ePrivacy, CCPA, LGPD, etc.) you are responsible for disclosing this data collection in your site's Privacy Policy and, where applicable, obtaining visitor consent before SplitPress runs.
-SplitPress does not provide a built-in consent mechanism — use a consent management tool to conditionally load the plugin based on visitor consent if required.
+If your visitors are located in the EU or other regions governed by privacy regulations (GDPR, ePrivacy, CCPA, LGPD, etc.) you are responsible for disclosing this data collection in your site's Privacy Policy and, where applicable, obtaining visitor consent before SplitEvo runs.
+SplitEvo does not provide a built-in consent mechanism — use a consent management tool to conditionally load the plugin based on visitor consent if required.
 
 == Changelog ==
 

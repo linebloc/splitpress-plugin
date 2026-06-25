@@ -1,10 +1,10 @@
-# SplitPress
+# SplitEvo
 
 **Backend A/B testing for WordPress — no flicker, no redirect, no duplicate URLs.**
 
 Most A/B testing tools swap content after the page has already started loading, causing a flash of the wrong version before the variant snaps in. Others serve each variant at a different URL, which splits link equity and leaves behind 404s when a test ends.
 
-SplitPress works differently: variant assignment happens in PHP, before `wp_head`, so visitors always receive the correct version from the very first byte — at the same URL.
+SplitEvo works differently: variant assignment happens in PHP, before `wp_head`, so visitors always receive the correct version from the very first byte — at the same URL.
 
 ---
 
@@ -14,7 +14,7 @@ SplitPress works differently: variant assignment happens in PHP, before `wp_head
 2. The plugin checks the cached test manifest for an active test targeting that page.
 3. A deterministic hash of the visitor ID and test ID assigns them to a variant — stably, across visits.
 4. WordPress serves the variant post transparently. The URL never changes.
-5. A lightweight tracker script fires behavioral events (page views, clicks, scroll depth, etc.) back through WordPress admin-ajax to the SplitPress API, keeping the API key off the browser entirely.
+5. A lightweight tracker script fires behavioral events (page views, clicks, scroll depth, etc.) back through WordPress admin-ajax to the SplitEvo API, keeping the API key off the browser entirely.
 
 ---
 
@@ -33,7 +33,7 @@ SplitPress works differently: variant assignment happens in PHP, before `wp_head
 
 - WordPress 6.0+
 - PHP 7.4+
-- A [SplitPress account](https://splitpress.app) (free tier available)
+- A [SplitEvo account](https://splitevo.app) (free tier available)
 
 ---
 
@@ -41,7 +41,7 @@ SplitPress works differently: variant assignment happens in PHP, before `wp_head
 
 **From WordPress.org (recommended)**
 
-Search for **SplitPress** in *Plugins → Add New* and click *Install Now*.
+Search for **SplitEvo** in *Plugins → Add New* and click *Install Now*.
 
 **Manual**
 
@@ -50,16 +50,16 @@ Search for **SplitPress** in *Plugins → Add New* and click *Install Now*.
 
 **Setup**
 
-1. Create a free account at [splitpress.app](https://splitpress.app).
-2. In the SplitPress dashboard go to *Settings → Sites* and copy your API key.
-3. In WordPress admin go to *SplitPress → Settings*, paste the key, and save.
+1. Create a free account at [splitevo.app](https://splitevo.app).
+2. In the SplitEvo dashboard go to *Settings → Sites* and copy your API key.
+3. In WordPress admin go to *SplitEvo → Settings*, paste the key, and save.
 
 ---
 
 ## Plugin architecture
 
 ```
-splitpress.php              Bootstrap (headers, constants, autoloader)
+splitevo.php              Bootstrap (headers, constants, autoloader)
 src/
   Core/
     Plugin.php              Singleton — wires up all subsystems
@@ -72,7 +72,7 @@ src/
     Client.php              HMAC-signed HTTP client (wp_remote_*)
     Manifest.php            Transient cache for the test manifest + REST flush endpoint
   Admin/
-    AdminMenu.php           Registers the SplitPress admin menu
+    AdminMenu.php           Registers the SplitEvo admin menu
     SettingsPage.php        Settings form + connection test AJAX
     TestListPage.php        Mounts the React dashboard
     TestDetailPage.php      AJAX handlers for test actions (start, pause, end, apply winner)
@@ -108,7 +108,7 @@ npm run dev     # watch mode
 
 Pull requests are welcome. For significant changes, please open an issue first to discuss the approach.
 
-**Business logic belongs in the Laravel app, not here.** The plugin is intentionally a thin relay — it fetches a manifest, assigns visitors, and forwards events. Stats, billing, test configuration, and analytics live server-side at [splitpress.app](https://splitpress.app).
+**Business logic belongs in the Laravel app, not here.** The plugin is intentionally a thin relay — it fetches a manifest, assigns visitors, and forwards events. Stats, billing, test configuration, and analytics live server-side at [splitevo.app](https://splitevo.app).
 
 **PHP style**: WordPress Coding Standards via PHPCS.  
 **JS style**: The tracker (`tracker.js`) is vanilla JS with no build step. The dashboard uses React + Vite.
@@ -117,4 +117,4 @@ Pull requests are welcome. For significant changes, please open an issue first t
 
 ## License
 
-[GPL-2.0-or-later](https://www.gnu.org/licenses/gpl-2.0.html) © [SplitPress](https://splitpress.app)
+[GPL-2.0-or-later](https://www.gnu.org/licenses/gpl-2.0.html) © [SplitEvo](https://splitevo.app)

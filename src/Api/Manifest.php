@@ -1,8 +1,8 @@
 <?php
 
-namespace SplitPress\Api;
+namespace SplitEvo\Api;
 
-use SplitPress\Core\Options;
+use SplitEvo\Core\Options;
 
 defined('ABSPATH') || exit;
 
@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
  */
 class Manifest
 {
-    private const TRANSIENT_KEY = 'splitpress_manifest';
+    private const TRANSIENT_KEY = 'splitevo_manifest';
 
     private const TTL_SECONDS = 300; // 5 minutes
 
@@ -51,7 +51,7 @@ class Manifest
     }
 
     /**
-     * Register the REST endpoint that allows the SplitPress app to push
+     * Register the REST endpoint that allows the SplitEvo app to push
      * an instant cache invalidation whenever plan overrides change.
      *
      * Secured with a per-site HMAC token derived from the stored API key.
@@ -79,7 +79,7 @@ class Manifest
             return new \WP_Error('not_configured', 'Plugin not configured.', ['status' => 400]);
         }
 
-        $token = (string) $request->get_header('X-SplitPress-Token');
+        $token = (string) $request->get_header('X-SplitEvo-Token');
         $expected = hash_hmac('sha256', 'manifest_flush', $api_key);
 
         if (! hash_equals($expected, $token)) {

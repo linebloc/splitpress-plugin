@@ -12,56 +12,56 @@
 		</div>
 		<span class="sp-conn-badge <?php echo $is_configured ? 'sp-conn-badge--connected' : 'sp-conn-badge--disconnected'; ?>">
 			<span class="sp-conn-badge__dot"></span>
-			<?php echo $is_configured ? esc_html__('Connected', 'splitpress') : esc_html__('Not connected', 'splitpress'); ?>
+			<?php echo $is_configured ? esc_html__('Connected', 'splitevo') : esc_html__('Not connected', 'splitevo'); ?>
 		</span>
 		<h1 class="sp-header__title" style="margin-left: auto; font-size: 16px; font-weight: 600; color: var(--sp-text-muted);">
-			<?php esc_html_e('Settings', 'splitpress'); ?>
+			<?php esc_html_e('Settings', 'splitevo'); ?>
 		</h1>
 	</div>
 
 	<?php if (isset($_GET['updated']) && $_GET['updated'] === '1') { // phpcs:ignore WordPress.Security?>
 		<div class="sp-notice sp-notice--success">
-			<?php esc_html_e('Settings saved.', 'splitpress'); ?>
+			<?php esc_html_e('Settings saved.', 'splitevo'); ?>
 		</div>
 	<?php } ?>
 
 	<?php if (! $is_configured) { ?>
 		<div class="sp-notice sp-notice--info">
-			<strong><?php esc_html_e('Connect SplitPress', 'splitpress'); ?></strong> —
-			<?php esc_html_e('Enter your API key to connect this site to your SplitPress account.', 'splitpress'); ?>
+			<strong><?php esc_html_e('Connect SplitEvo', 'splitevo'); ?></strong> —
+			<?php esc_html_e('Enter your API key to connect this site to your SplitEvo account.', 'splitevo'); ?>
 		</div>
 	<?php } ?>
 
 	<?php if ($cache_plugin) { ?>
 		<div class="sp-notice sp-notice--warning">
 			<strong><?php echo esc_html($cache_plugin); ?> detected</strong> —
-			<?php esc_html_e('Page caching can interfere with A/B testing by serving the same cached version to all visitors. Exclude your test pages from cache, or enable "Cache-busting" in your cache plugin settings.', 'splitpress'); ?>
+			<?php esc_html_e('Page caching can interfere with A/B testing by serving the same cached version to all visitors. Exclude your test pages from cache, or enable "Cache-busting" in your cache plugin settings.', 'splitevo'); ?>
 		</div>
 	<?php } ?>
 
 	<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-		<input type="hidden" name="action" value="splitpress_save_settings" />
-		<?php wp_nonce_field('splitpress_settings_save'); ?>
+		<input type="hidden" name="action" value="splitevo_save_settings" />
+		<?php wp_nonce_field('splitevo_settings_save'); ?>
 
 		<!-- Connection -->
 		<div class="sp-card">
-			<h2 class="sp-card__title"><?php esc_html_e('Connection', 'splitpress'); ?></h2>
+			<h2 class="sp-card__title"><?php esc_html_e('Connection', 'splitevo'); ?></h2>
 
 			<?php if ($is_configured) { ?>
 				<div class="sp-connection-status" id="sp-connection-status">
 					<span class="sp-connection-status__dot sp-connection-status__dot--idle"></span>
 					<span class="sp-connection-status__text" id="sp-connection-text">
-						<?php esc_html_e('Not tested yet', 'splitpress'); ?>
+						<?php esc_html_e('Not tested yet', 'splitevo'); ?>
 					</span>
 					<button type="button" class="sp-btn sp-btn--ghost" id="sp-test-connection">
-						<?php esc_html_e('Test connection', 'splitpress'); ?>
+						<?php esc_html_e('Test connection', 'splitevo'); ?>
 					</button>
 				</div>
 			<?php } ?>
 
 			<div class="sp-field">
 				<label class="sp-field__label" for="sp-api-key">
-					<?php esc_html_e('API Key', 'splitpress'); ?>
+					<?php esc_html_e('API Key', 'splitevo'); ?>
 				</label>
 				<input
 					id="sp-api-key"
@@ -73,14 +73,14 @@
 					placeholder="sp_live_..."
 				/>
 				<p class="sp-field__help">
-					<?php esc_html_e('Find your site API key in SplitPress → Settings → Sites.', 'splitpress'); ?>
+					<?php esc_html_e('Find your site API key in SplitEvo → Settings → Sites.', 'splitevo'); ?>
 				</p>
 			</div>
 
 			<?php if ($dev_mode) { ?>
 			<div class="sp-field">
 				<label class="sp-field__label" for="sp-api-endpoint">
-					<?php esc_html_e('API Endpoint', 'splitpress'); ?>
+					<?php esc_html_e('API Endpoint', 'splitevo'); ?>
 				</label>
 				<input
 					id="sp-api-endpoint"
@@ -90,7 +90,7 @@
 					value="<?php echo esc_attr($api_endpoint); ?>"
 				/>
 				<p class="sp-field__help">
-					<?php esc_html_e('Only change this if you are self-hosting SplitPress.', 'splitpress'); ?>
+					<?php esc_html_e('Only change this if you are self-hosting SplitEvo.', 'splitevo'); ?>
 				</p>
 			</div>
 			<?php } ?>
@@ -100,72 +100,72 @@
 		<div class="sp-cards-row">
 
 			<div class="sp-card">
-				<h2 class="sp-card__title"><?php esc_html_e('Post Types', 'splitpress'); ?></h2>
+				<h2 class="sp-card__title"><?php esc_html_e('Post Types', 'splitevo'); ?></h2>
 				<p class="sp-card__description">
-					<?php esc_html_e('Select which post types can be used in A/B tests.', 'splitpress'); ?>
+					<?php esc_html_e('Select which post types can be used in A/B tests.', 'splitevo'); ?>
 				</p>
 
 				<div class="sp-checkbox-group sp-checkbox-group--grid">
-					<?php foreach ($post_types as $splitpress_type_key => $splitpress_type_label) { ?>
+					<?php foreach ($post_types as $splitevo_type_key => $splitevo_type_label) { ?>
 						<label class="sp-checkbox">
 							<input
 								type="checkbox"
 								name="enabled_post_types[]"
-								value="<?php echo esc_attr($splitpress_type_key); ?>"
-								<?php checked(in_array($splitpress_type_key, $enabled_types, true)); ?>
+								value="<?php echo esc_attr($splitevo_type_key); ?>"
+								<?php checked(in_array($splitevo_type_key, $enabled_types, true)); ?>
 							/>
-							<span class="sp-checkbox__label"><?php echo esc_html($splitpress_type_label); ?></span>
-							<span class="sp-checkbox__slug">(<?php echo esc_html($splitpress_type_key); ?>)</span>
+							<span class="sp-checkbox__label"><?php echo esc_html($splitevo_type_label); ?></span>
+							<span class="sp-checkbox__slug">(<?php echo esc_html($splitevo_type_key); ?>)</span>
 						</label>
 					<?php } ?>
 				</div>
 			</div>
 
 			<div class="sp-card">
-				<h2 class="sp-card__title"><?php esc_html_e('Permissions', 'splitpress'); ?></h2>
+				<h2 class="sp-card__title"><?php esc_html_e('Permissions', 'splitevo'); ?></h2>
 				<p class="sp-card__description">
-					<?php esc_html_e('Control which roles can access SplitPress features.', 'splitpress'); ?>
+					<?php esc_html_e('Control which roles can access SplitEvo features.', 'splitevo'); ?>
 				</p>
 
 				<div class="sp-perm-table">
 					<div class="sp-perm-row sp-perm-row--header">
 						<span class="sp-perm-row__role"></span>
 						<span class="sp-perm-row__caps">
-							<span><?php esc_html_e('View', 'splitpress'); ?></span>
-							<span><?php esc_html_e('Create', 'splitpress'); ?></span>
-							<span><?php esc_html_e('Edit', 'splitpress'); ?></span>
+							<span><?php esc_html_e('View', 'splitevo'); ?></span>
+							<span><?php esc_html_e('Create', 'splitevo'); ?></span>
+							<span><?php esc_html_e('Edit', 'splitevo'); ?></span>
 						</span>
 					</div>
-					<?php foreach ($roles as $splitpress_role_slug => $splitpress_role_label) { ?>
-						<?php $splitpress_is_admin = $splitpress_role_slug === 'administrator'; ?>
-						<div class="sp-perm-row <?php echo $splitpress_is_admin ? 'sp-perm-row--admin' : ''; ?>">
-							<span class="sp-perm-row__role"><?php echo esc_html($splitpress_role_label); ?></span>
+					<?php foreach ($roles as $splitevo_role_slug => $splitevo_role_label) { ?>
+						<?php $splitevo_is_admin = $splitevo_role_slug === 'administrator'; ?>
+						<div class="sp-perm-row <?php echo $splitevo_is_admin ? 'sp-perm-row--admin' : ''; ?>">
+							<span class="sp-perm-row__role"><?php echo esc_html($splitevo_role_label); ?></span>
 							<span class="sp-perm-row__caps">
 								<label class="sp-perm-cap">
 									<input
 										type="checkbox"
 										name="permissions[view_roles][]"
-										value="<?php echo esc_attr($splitpress_role_slug); ?>"
-										<?php checked($splitpress_is_admin || in_array($splitpress_role_slug, $permissions['view_roles'], true)); ?>
-										<?php disabled($splitpress_is_admin); ?>
+										value="<?php echo esc_attr($splitevo_role_slug); ?>"
+										<?php checked($splitevo_is_admin || in_array($splitevo_role_slug, $permissions['view_roles'], true)); ?>
+										<?php disabled($splitevo_is_admin); ?>
 									/>
 								</label>
 								<label class="sp-perm-cap">
 									<input
 										type="checkbox"
 										name="permissions[create_roles][]"
-										value="<?php echo esc_attr($splitpress_role_slug); ?>"
-										<?php checked($splitpress_is_admin || in_array($splitpress_role_slug, $permissions['create_roles'], true)); ?>
-										<?php disabled($splitpress_is_admin); ?>
+										value="<?php echo esc_attr($splitevo_role_slug); ?>"
+										<?php checked($splitevo_is_admin || in_array($splitevo_role_slug, $permissions['create_roles'], true)); ?>
+										<?php disabled($splitevo_is_admin); ?>
 									/>
 								</label>
 								<label class="sp-perm-cap">
 									<input
 										type="checkbox"
 										name="permissions[edit_roles][]"
-										value="<?php echo esc_attr($splitpress_role_slug); ?>"
-										<?php checked($splitpress_is_admin || in_array($splitpress_role_slug, $permissions['edit_roles'], true)); ?>
-										<?php disabled($splitpress_is_admin); ?>
+										value="<?php echo esc_attr($splitevo_role_slug); ?>"
+										<?php checked($splitevo_is_admin || in_array($splitevo_role_slug, $permissions['edit_roles'], true)); ?>
+										<?php disabled($splitevo_is_admin); ?>
 									/>
 								</label>
 							</span>
@@ -179,7 +179,7 @@
 
 		<div class="sp-actions">
 			<button type="submit" class="sp-btn sp-btn--primary">
-				<?php esc_html_e('Save Settings', 'splitpress'); ?>
+				<?php esc_html_e('Save Settings', 'splitevo'); ?>
 			</button>
 		</div>
 	</form>

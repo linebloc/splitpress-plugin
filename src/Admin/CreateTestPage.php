@@ -1,11 +1,11 @@
 <?php
 
-namespace SplitPress\Admin;
+namespace SplitEvo\Admin;
 
-use SplitPress\Api\Client;
-use SplitPress\Api\Manifest;
-use SplitPress\Core\Options;
-use SplitPress\Core\VariantCloner;
+use SplitEvo\Api\Client;
+use SplitEvo\Api\Manifest;
+use SplitEvo\Core\Options;
+use SplitEvo\Core\VariantCloner;
 
 defined('ABSPATH') || exit;
 
@@ -16,8 +16,8 @@ class CreateTestPage
 {
     public function register(): void
     {
-        add_action('wp_ajax_splitpress_search_posts', [$this, 'ajax_search_posts']);
-        add_action('wp_ajax_splitpress_create_test', [$this, 'ajax_create_test']);
+        add_action('wp_ajax_splitevo_search_posts', [$this, 'ajax_search_posts']);
+        add_action('wp_ajax_splitevo_create_test', [$this, 'ajax_create_test']);
     }
 
     /**
@@ -25,7 +25,7 @@ class CreateTestPage
      */
     public function ajax_search_posts(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! Options::user_can('create')) {
             wp_send_json_error('Unauthorized.', 403);
@@ -77,7 +77,7 @@ class CreateTestPage
      */
     public function ajax_create_test(): void
     {
-        check_ajax_referer('splitpress_admin', 'nonce');
+        check_ajax_referer('splitevo_admin', 'nonce');
 
         if (! Options::user_can('create')) {
             wp_send_json_error('Unauthorized.', 403);
@@ -154,13 +154,13 @@ class CreateTestPage
 
         if (! $test_id) {
             wp_delete_post($clone_id, true);
-            wp_send_json_error('Could not register the test with SplitPress. Check your connection in Settings.');
+            wp_send_json_error('Could not register the test with SplitEvo. Check your connection in Settings.');
         }
 
-        update_post_meta($clone_id, '_splitpress_test_id', $test_id);
+        update_post_meta($clone_id, '_splitevo_test_id', $test_id);
         // Always start as draft in WP so the editor is never blocked at creation time.
         // ajax_get_test() lazily syncs to the real API status when the dashboard opens.
-        update_post_meta($clone_id, '_splitpress_test_status', 'draft');
+        update_post_meta($clone_id, '_splitevo_test_status', 'draft');
 
         Manifest::flush();
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace SplitPress\Admin;
+namespace SplitEvo\Admin;
 
-use SplitPress\Core\Options;
+use SplitEvo\Core\Options;
 
 defined('ABSPATH') || exit;
 
@@ -16,12 +16,12 @@ class VariantsPage
     public function render(): void
     {
         if (! Options::user_can('view')) {
-            wp_die(esc_html__('Insufficient permissions.', 'splitpress'));
+            wp_die(esc_html__('Insufficient permissions.', 'splitevo'));
         }
 
         $grouped = $this->fetch_variants();
 
-        include SPLITPRESS_DIR.'src/Admin/views/variants.php';
+        include SPLITEVO_DIR.'src/Admin/views/variants.php';
     }
 
     /**
@@ -29,19 +29,19 @@ class VariantsPage
      */
     private function fetch_variants(): array
     {
-        // Current approach: native post type + _splitpress_variant meta flag.
+        // Current approach: native post type + _splitevo_variant meta flag.
         $current = get_posts([
             'post_type' => 'any',
             'post_status' => 'any',
             'posts_per_page' => -1,
-            'meta_query' => [['key' => '_splitpress_variant', 'value' => '1', 'compare' => '=']], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Dev-mode-only page; meta_query required to find variant posts bypassed by the pre_get_posts hook.
+            'meta_query' => [['key' => '_splitevo_variant', 'value' => '1', 'compare' => '=']], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Dev-mode-only page; meta_query required to find variant posts bypassed by the pre_get_posts hook.
             'orderby' => 'date',
             'order' => 'DESC',
         ]);
 
-        // Legacy: posts stored as the old splitpress_variant CPT (DB query — no type registration needed).
+        // Legacy: posts stored as the old splitevo_variant CPT (DB query — no type registration needed).
         $legacy = get_posts([
-            'post_type' => 'splitpress_variant',
+            'post_type' => 'splitevo_variant',
             'post_status' => 'any',
             'posts_per_page' => -1,
             'orderby' => 'date',

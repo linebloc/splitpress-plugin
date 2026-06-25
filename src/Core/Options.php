@@ -1,6 +1,6 @@
 <?php
 
-namespace SplitPress\Core;
+namespace SplitEvo\Core;
 
 defined('ABSPATH') || exit;
 
@@ -9,16 +9,16 @@ defined('ABSPATH') || exit;
  */
 class Options
 {
-    private const OPTION_KEY = 'splitpress_settings';
+    private const OPTION_KEY = 'splitevo_settings';
 
     /** Custom capabilities registered by the plugin. */
-    public const CAPS = ['splitpress_view', 'splitpress_create', 'splitpress_edit'];
+    public const CAPS = ['splitevo_view', 'splitevo_create', 'splitevo_edit'];
 
     private static function all(): array
     {
         $defaults = [
             'api_key' => '',
-            'api_endpoint' => 'https://splitpress.app/api/v1/plugin',
+            'api_endpoint' => 'https://splitevo.app/api/v1/plugin',
             'enabled_post_types' => ['post', 'page'],
             'dev_mode' => false,
             'permissions' => [
@@ -42,7 +42,7 @@ class Options
     {
         $stored = rtrim((string) self::all()['api_endpoint'], '/');
 
-        return $stored !== '' ? $stored : 'https://splitpress.app/api/v1/plugin';
+        return $stored !== '' ? $stored : 'https://splitevo.app/api/v1/plugin';
     }
 
     public static function enabled_post_types(): array
@@ -76,7 +76,7 @@ class Options
     }
 
     /**
-     * Check if the current user has the given SplitPress permission.
+     * Check if the current user has the given SplitEvo permission.
      * Falls back to manage_options when capabilities haven't been synced yet.
      *
      * @param  string  $action  'view' | 'create' | 'edit'
@@ -87,7 +87,7 @@ class Options
             return true;
         }
 
-        return current_user_can('splitpress_'.sanitize_key($action));
+        return current_user_can('splitevo_'.sanitize_key($action));
     }
 
     /**
@@ -99,9 +99,9 @@ class Options
         $perms = self::permissions();
 
         $cap_map = [
-            'splitpress_view' => $perms['view_roles'],
-            'splitpress_create' => $perms['create_roles'],
-            'splitpress_edit' => $perms['edit_roles'],
+            'splitevo_view' => $perms['view_roles'],
+            'splitevo_create' => $perms['create_roles'],
+            'splitevo_edit' => $perms['edit_roles'],
         ];
 
         foreach (wp_roles()->role_objects as $slug => $role) {
